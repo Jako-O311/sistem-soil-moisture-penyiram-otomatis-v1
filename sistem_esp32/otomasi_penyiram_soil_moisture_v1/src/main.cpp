@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <WiFi.h>
+#include <WebServer.h>
 
 // // put function declarations here:
 // int myFunction(int, int);
@@ -13,6 +15,11 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 // threshold kelembaban dalam persen
 const int moistureThreshold = 30;
 
+// kredensial wifi
+const char* ssid = "ssid";
+const char* password = "pass";
+WebServer server(80);
+
 void setup() {
   // put your setup code here, to run once:
   // int result = myFunction(2, 3);
@@ -21,6 +28,19 @@ void setup() {
   // Set pin relay sebagai output
   pinMode(relayPin, OUTPUT);
   digitalWrite(relayPin, HIGH);
+  // setup wifi
+  WiFi.begin(ssid, password);
+  Serial.println("koneksi ke wifi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  server.on("/", []() {
+    server.send(200, "text/plain", "Hello from ESP32!");
+  });
+  serv
+  server.begin();
+
   // inisialisasi LCD
   lcd.init();
   lcd.backlight();
