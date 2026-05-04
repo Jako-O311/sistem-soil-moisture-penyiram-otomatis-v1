@@ -15,10 +15,10 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 // threshold kelembaban dalam persen
 const int moistureThreshold = 30;
 
-// kredensial wifi
-const char* ssid = "ssid";
-const char* password = "pass";
-WebServer server(80);
+// // kredensial wifi
+// const char* ssid = "ssid";
+// const char* password = "pass";
+// WebServer server(80);
 
 void setup() {
   // put your setup code here, to run once:
@@ -35,11 +35,11 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-  server.on("/", []() {
-    server.send(200, "text/plain", "Hello from ESP32!");
-  });
-  serv
-  server.begin();
+  // server.on("/", []() {
+  //   server.send(200, "text/plain", "test123");
+  // });
+  // serv
+  // server.begin();
 
   // inisialisasi LCD
   lcd.init();
@@ -60,8 +60,8 @@ void loop() {
   // konversi ke persentase kelembaban
   // asumsikan 0 = basah 100%, 4095 = kering 0%)
   // sesuaikan mapping berdasarkan kalibrasi sensor
-  int moisturePercent1 = map(sensorValue1, 0, 4095, 100, 0);
-  int moisturePercent2 = map(sensorValue2, 0, 4095, 100, 0);
+  int moisturePercent1 = map(sensorValue1, 0, 4095, 100, 0) + 10;
+  int moisturePercent2 = map(sensorValue2, 0, 4095, 100, 0) + 10;
   // hitung rata kelembaban
   int avgMoisture = (moisturePercent1 + moisturePercent2) / 2;
   // kontrol relay - relay menyala jika rata-rata kelembaban di bawah threshold
