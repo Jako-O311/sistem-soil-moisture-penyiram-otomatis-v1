@@ -15,6 +15,7 @@ const int soilMoisturePin1 = 34;  // Pin untuk sensor kelembaban tanah 1
 // const int dhtPin = 17; // Pin untuk sensor kelembaban udara DHT22
 // TempAndHumidity dhtData; // Variabel untuk menyimpan data sensor DHT22
 const int relayPin = 12;          // Pin untuk relay 1 channel
+int stateRelay = HIGH; // Status awal relay (OFF)
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 // threshold kelembaban dalam persen
 const int moistureThreshold = 30;
@@ -32,6 +33,7 @@ void setup() {
   // Set pin relay sebagai output
   pinMode(relayPin, OUTPUT);
   digitalWrite(relayPin, HIGH);
+  stateRelay = digitalRead(relayPin);
   // // setup sensor DHT22
   // dht.setup(dhtPin, DHTesp::DHT22);
   // dhtData = dht.getTempAndHumidity(); // Baca data awal dari DHT22
@@ -89,7 +91,7 @@ void loop() {
   // lcd.print("%");
   lcd.setCursor(0, 1);
   lcd.print("Relay: ");
-  if (digitalRead(relayPin) == LOW) {
+  if (stateRelay == LOW) {
     lcd.print("ON ");
   } else {
     lcd.print("OFF");
@@ -103,7 +105,7 @@ void loop() {
   // Serial.print(avgMoisture);
   // Serial.println("Temp: "+String(dhtData.temperature, 2)+"'C Kelembaban: "+String(dhtData.humidity, 1)+"%");
   Serial.print("Relay: ");
-  Serial.println(digitalRead(relayPin) == LOW ? "ON" : "OFF");
+  Serial.println(stateRelay == LOW ? "ON" : "OFF");
   // delay 1 detik
   delay(1000);
 }
